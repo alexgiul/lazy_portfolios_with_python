@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
-from portfolio_methods import *
+from matplotlib.pyplot import annotate
 
+from portfolio_methods import *
+import seaborn as sns
 
 if __name__ == "__main__":
     # Define your portfolio and a specific investment amount
@@ -15,9 +17,10 @@ if __name__ == "__main__":
 
     # Create the heatmap
     plt.figure(figsize=(8, 6))
-    plt.imshow(correlation, cmap='viridis', interpolation='nearest')
-    plt.colorbar(label='Correlation Coefficient')
+    plt.imshow(correlation, cmap='coolwarm')
+    plt.colorbar(label='Asset Correlation Coefficient')
     plt.title('Correlation Heatmap')
     plt.xticks(range(len(correlation.columns)), correlation.columns)
     plt.yticks(range(len(correlation.columns)), correlation.columns)
+    plt.savefig('correlation_heatmap.png')
     plt.show()

@@ -1,7 +1,3 @@
-import matplotlib.pyplot as plt
-import numpy as np
-from matplotlib.ticker import FuncFormatter
-
 from portfolio_methods import *
 
 def demo_time_based_rebalancing():

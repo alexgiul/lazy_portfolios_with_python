@@ -35,6 +35,7 @@ if __name__ == "__main__":
     plt.gca().yaxis.set_major_formatter(FuncFormatter(thousands_formatter))
     plt.grid(True)
     plt.legend(loc="upper left", frameon=True)
+    plt.savefig('portfolio_value_chart.png')
 
 
     # Calculate the drawdown
@@ -50,4 +51,5 @@ if __name__ == "__main__":
     plt.xlabel('Date')
     plt.ylabel('Drawdown (%)')
     plt.grid(True)
+    plt.savefig('portfolio_drawdown_chart.png')
     plt.show()

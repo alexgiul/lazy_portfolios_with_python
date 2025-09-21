@@ -37,4 +37,5 @@ if __name__ == "__main__":
     plt.title('Monte Carlo Simulation of Future Returns')
     plt.xlabel('Days')
     plt.ylabel('Cumulative Return')
+    plt.savefig('monte_carlo_simulation.png')
     plt.show()
