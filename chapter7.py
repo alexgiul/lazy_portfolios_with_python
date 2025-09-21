@@ -35,7 +35,7 @@ if __name__ == "__main__":
     plt.gca().yaxis.set_major_formatter(FuncFormatter(thousands_formatter))
     plt.grid(True)
     plt.legend(loc="upper left", frameon=True)
-    plt.show()
+
 
     # Calculate the drawdown
     drawdown_series, max_drawdown = calculate_drawdown(portfolio_value)

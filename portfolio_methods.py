@@ -36,6 +36,12 @@ def fetch_data(tickers, start_date, end_date, cache_dir="cache"):
         try:
             with open(cache_file, "rb") as f:
                 data = pickle.load(f)
+            # This prevents miscalculation when applying weights later in the script.
+            if isinstance(data, pd.Series):
+                # If only one ticker is fetched, it's returned as a Series, so we convert it to a DataFrame.
+                data = data.to_frame()
+            data = data.reindex(columns=tickers)
+
             return data
         except Exception as e:
             print(f"Error loading cached data: {e}, refetching from yfinance...")
@@ -44,6 +50,13 @@ def fetch_data(tickers, start_date, end_date, cache_dir="cache"):
     print(f"Fetching data for tickers: {tickers} from {start_date} to {end_date}...")
     try:
         data = yf.download(tickers, start=start_date, end=end_date, auto_adjust=False)['Adj Close']
+        # This prevents miscalculation when applying weights later in the script.
+        if isinstance(data, pd.Series):
+            # If only one ticker is fetched, it's returned as a Series, so we convert it to a DataFrame.
+            data = data.to_frame()
+        data = data.reindex(columns=tickers)
+
+
         # Save to cache
         with open(cache_file, "wb") as f:
             pickle.dump(data, f)
@@ -249,7 +262,7 @@ def calculate_sharpe_ratio(daily_returns, risk_free_rate=0.01):
     return sharpe_ratio
 
 
-def check_rebalance_at_date(data, target_weights:List[float], check_date:str, total_value):
+def check_rebalance_at_date(data, target_weights, check_date:str, total_value):
     """
     Performs a time-based rebalancing check on a specific date.
 
@@ -267,16 +280,22 @@ def check_rebalance_at_date(data, target_weights:List[float], check_date:str, to
         return {}
 
     try:
-        # Get the most recent prices on or before the check_date
-        latest_prices = data.loc[check_date]
+        # Use .loc to select all data up to the check_date and then get the last entry
+        latest_prices = data.loc[:check_date].iloc[-1]
+    except IndexError:
+        print(f"No data available on or before {check_date}. Please check the date range.")
+        return {}
     except KeyError:
-        print(f"No data available for {check_date}. Please check the date range.")
+        print(f"No data available on or before {check_date}. Please check the date range.")
         return {}
 
     current_weights = latest_prices / latest_prices.sum()
 
     rebalance_recommendations = {}
     should_rebalance = False
+
+    print(f"\nWeight at {check_date} before rebalancing")
+    print(current_weights)
 
     for ticker, weight in current_weights.items():
         target_weight = target_weights[list(current_weights.keys()).index(ticker)]

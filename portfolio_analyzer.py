@@ -259,7 +259,7 @@ if __name__ == "__main__":
     #demo_correlation()
 
     # Example rebalnce US portfolio
-    # demo_time_based_rebalancing()
+    demo_time_based_rebalancing()
     # demo_tolerance_based_rebalancing()
 
     #

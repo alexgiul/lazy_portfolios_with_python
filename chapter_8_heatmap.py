@@ -1,6 +1,4 @@
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FuncFormatter
-
 from portfolio_methods import *
 
 
