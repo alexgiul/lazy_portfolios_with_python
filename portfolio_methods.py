@@ -385,7 +385,7 @@ def calculate_portfolio_value_on_date(portfolio_data, initial_investment, start_
     return portfolio_value.iloc[-1] if not portfolio_value.empty else None
 
 # Chart formatter function
-def thousands_formatter(x):
+def thousands_formatter(x, pos):
     if x >= 1000:
         return f"{x/1000:.1f}k".rstrip('0').rstrip('.')
     return str(x)
